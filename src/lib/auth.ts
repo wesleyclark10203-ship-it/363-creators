@@ -5,7 +5,7 @@ import { ROLES, type Role } from '@/types'
 import { db } from './db'
 
 const AUTH_COOKIE_NAME = '363_auth_token'
-const JWT_SECRET = process.env.AUTH_SECRET || 'super-secret-jwt-key-change-this-in-production-min-32-chars'
+const JWT_SECRET = process.env.AUTH_SECRET || 'creators_363_auth_signature_key_2026'
 
 export interface JWTPayload {
   userId: string
