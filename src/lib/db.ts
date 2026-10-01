@@ -8,25 +8,40 @@ function getDatabaseUrl(): string {
     const rawPath = envUrl.replace(/^file:/, '').trim()
     const cleanPath = rawPath.startsWith('./') ? rawPath.substring(2) : rawPath
 
-    // In Netlify / Serverless environments, /var/task is read-only.
-    // Copy SQLite database file to /tmp directory which is writable.
-    const isServerless = process.env.NETLIFY || process.env.AWS_LAMBDA_FUNCTION_NAME || process.env.VERCEL
+    const isServerless = process.env.NETLIFY || process.env.AWS_LAMBDA_FUNCTION_NAME || process.env.VERCEL || process.env.NODE_ENV === 'production'
     if (isServerless && fs.existsSync('/tmp')) {
       const tmpDbPath = '/tmp/dev.db'
-      const sourceDbPath = path.isAbsolute(cleanPath)
-        ? cleanPath
-        : path.join(process.cwd(), cleanPath.includes('prisma') ? cleanPath : path.join('prisma', cleanPath))
+      const possibleSources = [
+        path.join(process.cwd(), 'prisma', 'dev.db'),
+        path.join(process.cwd(), 'dev.db'),
+        path.join('/var/task', 'prisma', 'dev.db'),
+        path.join('/var/task', 'dev.db'),
+        path.resolve(cleanPath),
+      ]
+
+      let sourceFound = ''
+      for (const src of possibleSources) {
+        if (fs.existsSync(src)) {
+          sourceFound = src
+          break
+        }
+      }
 
       try {
-        if (!fs.existsSync(tmpDbPath) && fs.existsSync(sourceDbPath)) {
-          fs.copyFileSync(sourceDbPath, tmpDbPath)
+        if (sourceFound && !fs.existsSync(tmpDbPath)) {
+          fs.copyFileSync(sourceFound, tmpDbPath)
         }
       } catch (e) {
         console.error('Error copying SQLite file to /tmp:', e)
       }
 
       if (fs.existsSync(tmpDbPath)) {
-        return `file:${tmpDbPath}`
+        try {
+          fs.chmodSync(tmpDbPath, 0o666)
+        } catch (e) {}
+        const tmpUrl = `file:${tmpDbPath}`
+        process.env.DATABASE_URL = tmpUrl
+        return tmpUrl
       }
     }
 
@@ -34,11 +49,13 @@ function getDatabaseUrl(): string {
       ? cleanPath
       : path.join(process.cwd(), cleanPath)
 
-    if (!finalPath.includes('prisma')) {
+    if (!finalPath.includes('prisma') && !fs.existsSync(finalPath)) {
       finalPath = path.join(process.cwd(), 'prisma', 'dev.db')
     }
 
-    return `file:${finalPath}`
+    const finalUrl = `file:${finalPath}`
+    process.env.DATABASE_URL = finalUrl
+    return finalUrl
   }
   return envUrl
 }
