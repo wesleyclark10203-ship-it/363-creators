@@ -4,9 +4,9 @@ import bcrypt from 'bcryptjs'
 const prisma = new PrismaClient()
 
 async function main() {
-  console.log('🌱 Starting database seed...')
+  console.log('🌱 Starting clean database seed...')
 
-  // Clear existing data
+  // Clear all existing data
   await prisma.payment.deleteMany()
   await prisma.invoice.deleteMany()
   await prisma.report.deleteMany()
@@ -31,10 +31,9 @@ async function main() {
   await prisma.user.deleteMany()
 
   const passwordHash = await bcrypt.hash('wesleyclark', 10)
-  const clientPasswordHash = await bcrypt.hash('client123', 10)
 
-  // 1. Create Users & Clients
-  const adminUser = await prisma.user.create({
+  // 1. Create Super Admin User
+  await prisma.user.create({
     data: {
       email: 'wesleyclark10203@gmail.com',
       passwordHash,
@@ -44,70 +43,7 @@ async function main() {
     },
   })
 
-  const client1User = await prisma.user.create({
-    data: {
-      email: 'client@safari.co.ke',
-      passwordHash: clientPasswordHash,
-      name: 'David Kimani',
-      role: 'CLIENT',
-      avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=300',
-      clientProfile: {
-        create: {
-          companyName: 'Safari Trails East Africa',
-          industry: 'Tourism & Hospitality',
-          phone: '+254 712 345678',
-          whatsapp: '+254 712 345678',
-          website: 'https://safaritrails.co.ke',
-          address: 'Karen Office Park, Nairobi, Kenya',
-        },
-      },
-    },
-    include: { clientProfile: true },
-  })
-
-  const client2User = await prisma.user.create({
-    data: {
-      email: 'marketing@savannahbistro.com',
-      passwordHash: clientPasswordHash,
-      name: 'Amina Mohamed',
-      role: 'CLIENT',
-      avatar: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=300',
-      clientProfile: {
-        create: {
-          companyName: 'Savannah Bistro Nairobi',
-          industry: 'Food & Beverage',
-          phone: '+254 722 987654',
-          whatsapp: '+254 722 987654',
-          website: 'https://savannahbistro.com',
-          address: 'Westlands, Nairobi, Kenya',
-        },
-      },
-    },
-    include: { clientProfile: true },
-  })
-
-  const client3User = await prisma.user.create({
-    data: {
-      email: 'info@nexusrealestate.co.ke',
-      passwordHash: clientPasswordHash,
-      name: 'Brian Omondi',
-      role: 'CLIENT',
-      avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=300',
-      clientProfile: {
-        create: {
-          companyName: 'Nexus Heights Properties',
-          industry: 'Real Estate',
-          phone: '+254 733 112233',
-          whatsapp: '+254 733 112233',
-          website: 'https://nexusrealestate.co.ke',
-          address: 'Kilimani, Nairobi, Kenya',
-        },
-      },
-    },
-    include: { clientProfile: true },
-  })
-
-  console.log('✅ Users & Clients created')
+  console.log('✅ Super Admin created (wesleyclark10203@gmail.com)')
 
   // 2. Services
   const servicesData = [
@@ -320,7 +256,7 @@ async function main() {
   }
   console.log('✅ Services created')
 
-  // 3. Portfolio Projects
+  // 3. Portfolio Projects Showcase
   const portfolioData = [
     {
       title: 'Safari Trails East Africa Platform',
@@ -404,53 +340,6 @@ async function main() {
       url: 'https://nexusrealestate.co.ke',
       isFeatured: true,
       order: 3,
-    },
-    {
-      title: 'Kikwetu E-Commerce Fashion Store',
-      slug: 'kikwetu-apparel',
-      clientName: 'Kikwetu Apparel',
-      industry: 'E-Commerce',
-      description: 'End-to-end e-commerce store with automated M-Pesa express checkout, retargeting funnel, and influencer content kit.',
-      challenge: 'Manual order processing via Instagram DMs led to lost sales and delayed customer fulfillment.',
-      strategy: 'Built a sleek Next.js store with instant M-Pesa payment prompt and automated inventory sync.',
-      execution: 'Shopify-to-Custom Next.js migration, Meta Pixel setup, SMS delivery notifications.',
-      servicesProvided: JSON.stringify(['Website Development', 'Digital Marketing', 'SEO']),
-      technologies: JSON.stringify(['Next.js', 'M-Pesa STK Push', 'Tailwind', 'Resend Email']),
-      projectDate: '2024',
-      featuredImage: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&q=80&w=1000',
-      gallery: JSON.stringify(['https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&q=80&w=800']),
-      results: JSON.stringify({
-        'Monthly Sales': 'KSh 2.4M+',
-        'Cart Abandonment Drop': '-45%',
-        'Organic Traffic': '+310%'
-      }),
-      testimonialText: 'The automated M-Pesa checkout transformed our business overnight. Orders flow seamlessly without manual messages.',
-      url: 'https://kikwetustore.co.ke',
-      isFeatured: false,
-      order: 4,
-    },
-    {
-      title: 'Apex Law Chambers Corporate Rebrand',
-      slug: 'apex-law-chambers',
-      clientName: 'Apex Law',
-      industry: 'Legal & Professional Services',
-      description: 'Premium brand guidelines, bilingual corporate website, and executive LinkedIn positioning.',
-      challenge: 'Outdated visual identity that failed to reflect the firm’s stature in corporate dispute resolution.',
-      strategy: 'Designed an authoritative obsidian-and-gold brand palette, published thought-leadership articles, and optimized corporate SEO.',
-      execution: 'Brand guideline publication, Next.js corporate portal, LinkedIn content series.',
-      servicesProvided: JSON.stringify(['Branding', 'Website Development', 'SEO']),
-      technologies: JSON.stringify(['React', 'Tailwind', 'Schema.org SEO']),
-      projectDate: '2024',
-      featuredImage: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=1000',
-      gallery: JSON.stringify(['https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=800']),
-      results: JSON.stringify({
-        'Corporate Consultations': '+140%',
-        'Search Visibility': 'Page 1 on Google'
-      }),
-      testimonialText: '363 Creators gave our legal firm an international, world-class image.',
-      url: 'https://apexlaw.co.ke',
-      isFeatured: false,
-      order: 5,
     },
   ]
 
@@ -551,39 +440,6 @@ async function main() {
       isPublished: true,
       order: 2,
     },
-    {
-      clientName: 'Brian Omondi',
-      company: 'Nexus Heights Properties',
-      position: 'Head of Sales',
-      photoUrl: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=200',
-      content: 'The quality of leads coming from 363 Creators’ ad campaigns is exceptional. They don’t just deliver clicks; they deliver real buyers interested in our Kilimani apartments.',
-      serviceCategory: 'Digital Advertising',
-      rating: 5,
-      isPublished: true,
-      order: 3,
-    },
-    {
-      clientName: 'Sarah Jenkins',
-      company: 'Kikwetu Apparel',
-      position: 'Founder',
-      photoUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=200',
-      content: 'Our new Next.js online store with integrated M-Pesa payments works flawlessly. 363 Creators executed the project on time and within budget.',
-      serviceCategory: 'E-Commerce Website',
-      rating: 5,
-      isPublished: true,
-      order: 4,
-    },
-    {
-      clientName: 'Charles Oduor',
-      company: 'Apex Law Chambers',
-      position: 'Managing Partner',
-      photoUrl: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=200',
-      content: 'An outstanding digital agency partner. They handled our corporate rebrand and website build with high precision and professionalism.',
-      serviceCategory: 'Branding & Web',
-      rating: 5,
-      isPublished: true,
-      order: 5,
-    },
   ]
 
   for (const t of testimonialsData) {
@@ -614,9 +470,6 @@ Demonstrate how your product solves a specific pain point. Show behind-the-scene
 
 ## 3. Clear Call-To-Action (CTA)
 Never leave your viewer guessing. Direct them to tap the link in your bio, send a WhatsApp message, or visit your website.
-
-## 4. Consistent Batch Production
-Top performing brands don't post once a month. Work with a dedicated digital agency like **363 Creators** to batch shoot and schedule 15-20 high-quality reels monthly.
       `,
       seoTitle: 'Short-Form Video Marketing Strategy for Kenyan Brands | 363 Creators',
       seoDescription: 'Learn how to leverage TikTok and Instagram Reels to scale your business in East Africa.',
@@ -637,72 +490,9 @@ When building a digital presence for a serious enterprise, choosing the right we
 
 ## 1. Sub-Second Speed & Core Web Vitals
 Next.js leverages Server-Side Rendering (SSR) and Static Site Generation (SSG) to serve pre-rendered HTML to visitors instantly.
-
-## 2. Bank-Grade Security
-Unlike WordPress sites that suffer from vulnerable third-party plugins, Next.js applications run on modern JavaScript runtimes without exposing vulnerable database query endpoints.
-
-## 3. Native M-Pesa & Payment API Integration
-Custom React/Next.js builds allow seamless integration with payment gateways like M-Pesa STK Push and Stripe without relying on heavy third-party plugins.
       `,
       seoTitle: 'Next.js vs WordPress for Business Websites | 363 Creators',
       seoDescription: 'Discover the speed, security, and conversion benefits of custom Next.js website development.',
-      isPublished: true,
-    },
-    {
-      title: 'Mastering Local SEO in Nairobi: How to Rank #1 on Google',
-      slug: 'mastering-local-seo-nairobi-google-rankings',
-      author: 'SEO Specialist',
-      featuredImage: 'https://images.unsplash.com/photo-1432888498266-38ffec3eaf0a?auto=format&fit=crop&q=80&w=1000',
-      excerpt: 'Local search queries like "best restaurant in Westlands" or "real estate in Kilimani" drive high-intent customers. Master local SEO with this actionable playbook.',
-      category: 'SEO',
-      tags: JSON.stringify(['SEO', 'Google Maps', 'Local Marketing', 'Nairobi']),
-      content: `
-# Mastering Local SEO in Nairobi
-
-Local search volume in Kenya has grown exponentially over the past 3 years.
-
-## Key Steps:
-1. Optimize Google Business Profile (NAP consistency).
-2. Gather genuine 5-star customer reviews.
-3. Build location-specific landing pages.
-4. Implement schema markup for structured local data.
-      `,
-      seoTitle: 'Local SEO Guide Nairobi Kenya | 363 Creators',
-      seoDescription: 'Rank #1 on Google for local searches in Nairobi and East Africa.',
-      isPublished: true,
-    },
-    {
-      title: 'The Blueprint for Building a High-Converting Brand Identity',
-      slug: 'blueprint-for-building-high-converting-brand-identity',
-      author: 'Brand Design Lead',
-      featuredImage: 'https://images.unsplash.com/photo-1600132806370-bf17e65e942f?auto=format&fit=crop&q=80&w=1000',
-      excerpt: 'Branding is more than just a logo. Discover how color psychology, typography, and brand positioning elevate your market authority.',
-      category: 'Branding',
-      tags: JSON.stringify(['Branding', 'Graphic Design', 'Visual Identity']),
-      content: `
-# The Blueprint for Building a High-Converting Brand Identity
-
-Your visual brand communicates quality before a customer ever reads your pitch.
-      `,
-      seoTitle: 'Brand Identity Design Guide | 363 Creators',
-      seoDescription: 'Build a premium brand identity that commands high pricing.',
-      isPublished: true,
-    },
-    {
-      title: 'Meta Ads vs Google Ads: Which is Right for Your East African Business?',
-      slug: 'meta-ads-vs-google-ads-east-africa',
-      author: 'Performance Marketer',
-      featuredImage: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=1000',
-      excerpt: 'Should you invest in Facebook/Instagram ads or Google Search ads? We break down targeting, costs, and conversion metrics.',
-      category: 'Marketing',
-      tags: JSON.stringify(['Meta Ads', 'Google Ads', 'PPC', 'Digital Marketing']),
-      content: `
-# Meta Ads vs Google Ads: Which is Right for Your Business?
-
-Understanding search intent vs visual impulse discovery is key to choosing your primary ad channel.
-      `,
-      seoTitle: 'Meta Ads vs Google Ads in Kenya | 363 Creators',
-      seoDescription: 'Compare advertising channels for optimal ROI in East Africa.',
       isPublished: true,
     },
   ]
@@ -712,365 +502,7 @@ Understanding search intent vs visual impulse discovery is key to choosing your 
   }
   console.log('✅ Blog Posts created')
 
-  // 7. Leads & Quotes
-  const leadsData = [
-    {
-      referenceNo: 'LEAD-901',
-      name: 'Michael Njuguna',
-      company: 'Great Rift Logistics',
-      email: 'mnjuguna@riftlogistics.com',
-      phone: '+254 711 998877',
-      serviceRequested: 'Website Design & Development',
-      budgetRange: 'KSh 100,000+',
-      projectDetails: 'We need a modern corporate website with real-time shipment tracking and customer portal.',
-      source: 'Google Search',
-      status: 'NEW',
-    },
-    {
-      referenceNo: 'LEAD-902',
-      name: 'Grace Mutua',
-      company: 'Zenith Health Spa',
-      email: 'grace@zenithspa.co.ke',
-      phone: '+254 722 445566',
-      serviceRequested: 'Social Media Management',
-      budgetRange: 'KSh 50,000–100,000',
-      projectDetails: 'Looking for full social media takeover, monthly reel video shoots, and Instagram booking management.',
-      source: 'Instagram',
-      status: 'QUALIFIED',
-    },
-    {
-      referenceNo: 'LEAD-903',
-      name: 'Kevin Vance',
-      company: 'Vance Tech Solutions',
-      email: 'kvance@vancetech.com',
-      phone: '+254 733 887766',
-      serviceRequested: 'Digital Marketing & Ads',
-      budgetRange: 'KSh 100,000+',
-      projectDetails: 'Need B2B lead generation campaigns on LinkedIn and Google Ads targeting IT directors in Nairobi.',
-      source: 'Referral',
-      status: 'PROPOSAL_SENT',
-    },
-    {
-      referenceNo: 'LEAD-904',
-      name: 'Catherine Wambui',
-      company: 'Urban Threads Boutique',
-      email: 'cate@urbanthreads.co.ke',
-      phone: '+254 700 123123',
-      serviceRequested: 'Branding & Creative Design',
-      budgetRange: 'KSh 20,000–50,000',
-      projectDetails: 'Complete rebrand package including logo, social media templates, and store signage vectors.',
-      source: 'Website Form',
-      status: 'CONTACTED',
-    },
-    {
-      referenceNo: 'LEAD-905',
-      name: 'Emmanuel Kiprop',
-      company: 'Rift Valley Organic Farm',
-      email: 'emmanuel@riftvalleyorganic.co.ke',
-      phone: '+254 744 556677',
-      serviceRequested: 'E-Commerce Website & SEO',
-      budgetRange: 'KSh 50,000–100,000',
-      projectDetails: 'Online store for organic produce delivery in Nairobi with M-Pesa automated checkout.',
-      source: 'Website Form',
-      status: 'WON',
-    },
-  ]
-
-  for (const l of leadsData) {
-    await prisma.lead.create({ data: l })
-  }
-
-  await prisma.quote.create({
-    data: {
-      referenceNo: '363-8821',
-      businessName: 'Great Rift Logistics',
-      contactName: 'Michael Njuguna',
-      email: 'mnjuguna@riftlogistics.com',
-      phone: '+254 711 998877',
-      whatsapp: '+254 711 998877',
-      services: JSON.stringify(['Website Development', 'SEO', 'Digital Marketing']),
-      projectDetails: 'Full corporate web portal build and regional SEO campaign.',
-      budgetRange: 'KSh 100,000+',
-      timeline: '1 Month',
-      extraInfo: 'We want to launch before Q4.',
-      status: 'PENDING',
-    },
-  })
-  console.log('✅ Leads & Quotes created')
-
-  // 8. Consultations
-  await prisma.consultation.create({
-    data: {
-      service: 'Website Design & Development',
-      date: '2026-10-05',
-      timeSlot: '10:00 AM - 11:00 AM',
-      name: 'Michael Njuguna',
-      email: 'mnjuguna@riftlogistics.com',
-      phone: '+254 711 998877',
-      businessName: 'Great Rift Logistics',
-      message: 'Discussing scope and timeline for logistics website.',
-      status: 'APPROVED',
-    },
-  })
-  await prisma.consultation.create({
-    data: {
-      service: 'Social Media Management',
-      date: '2026-10-06',
-      timeSlot: '02:00 PM - 03:00 PM',
-      name: 'Grace Mutua',
-      email: 'grace@zenithspa.co.ke',
-      phone: '+254 722 445566',
-      businessName: 'Zenith Health Spa',
-      message: 'Planning social media reels shoot for October.',
-      status: 'PENDING',
-    },
-  })
-  console.log('✅ Consultations created')
-
-  // 9. Projects & Milestones
-  const project1 = await prisma.project.create({
-    data: {
-      clientProfileId: client1User.clientProfile!.id,
-      name: 'Safari Trails Q4 Growth Campaign & Web Optimization',
-      serviceType: 'Growth Retainer',
-      description: 'Ongoing social media management, video reels production, and website booking funnel optimization.',
-      status: 'IN_PROGRESS',
-      progress: 65,
-      startDate: new Date('2024-09-01'),
-      deadline: new Date('2024-12-31'),
-      budget: 220000,
-      assignedTeam: JSON.stringify(['Alex Creator', 'Sarah Lead', 'David Developer']),
-      milestones: {
-        create: [
-          { name: 'October Content Calendar & Shoot', dueDate: new Date('2024-10-01'), status: 'COMPLETED', order: 1 },
-          { name: 'Website Speed & Booking UX Upgrade', dueDate: new Date('2024-10-15'), status: 'IN_PROGRESS', order: 2 },
-          { name: 'Q4 Meta Ad Campaign Launch', dueDate: new Date('2024-11-01'), status: 'PENDING', order: 3 },
-        ],
-      },
-    },
-  })
-
-  const project2 = await prisma.project.create({
-    data: {
-      clientProfileId: client2User.clientProfile!.id,
-      name: 'Savannah Bistro Menu Relaunch & Reel Series',
-      serviceType: 'Social Media & Video',
-      description: 'Creation of 16 high-definition video reels and community engagement campaign for new culinary offerings.',
-      status: 'IN_PROGRESS',
-      progress: 80,
-      startDate: new Date('2024-09-10'),
-      deadline: new Date('2024-10-30'),
-      budget: 95000,
-      assignedTeam: JSON.stringify(['Alex Creator', 'Joy Video']),
-      milestones: {
-        create: [
-          { name: 'On-site Food Shoot', dueDate: new Date('2024-09-15'), status: 'COMPLETED', order: 1 },
-          { name: 'Batch Reel Editing & Color Grading', dueDate: new Date('2024-09-25'), status: 'COMPLETED', order: 2 },
-          { name: 'Client Post Approval & Scheduling', dueDate: new Date('2024-10-05'), status: 'IN_PROGRESS', order: 3 },
-        ],
-      },
-    },
-  })
-
-  const project3 = await prisma.project.create({
-    data: {
-      clientProfileId: client3User.clientProfile!.id,
-      name: 'Nexus Heights Property Launch & Lead Ads',
-      serviceType: 'Digital Advertising',
-      description: 'Lead generation ad funnels on Meta & LinkedIn for new Kilimani apartment development.',
-      status: 'REVIEW',
-      progress: 90,
-      startDate: new Date('2024-08-15'),
-      deadline: new Date('2024-10-15'),
-      budget: 180000,
-      assignedTeam: JSON.stringify(['Sarah Lead', 'Mark Ads']),
-      milestones: {
-        create: [
-          { name: 'Ad Creative Design & Landing Page', dueDate: new Date('2024-08-30'), status: 'COMPLETED', order: 1 },
-          { name: 'Campaign Launch & Optimization', dueDate: new Date('2024-09-15'), status: 'COMPLETED', order: 2 },
-          { name: 'Lead Export & Final Report', dueDate: new Date('2024-10-10'), status: 'IN_PROGRESS', order: 3 },
-        ],
-      },
-    },
-  })
-
-  console.log('✅ Projects & Milestones created')
-
-  // 10. Social Posts & Approval Examples
-  const post1 = await prisma.socialPost.create({
-    data: {
-      projectId: project1.id,
-      title: 'Masai Mara Great Migration Sunset Reel',
-      platform: 'INSTAGRAM',
-      contentType: 'Reel / Video',
-      mediaUrl: 'https://images.unsplash.com/photo-1516426122078-c23e76319801?auto=format&fit=crop&q=80&w=800',
-      caption: 'Experience the world’s greatest wildlife spectacle in luxury. 🦁✨ Reserve your October Masai Mara luxury safari today with Safari Trails East Africa.\n\nDirect booking link in bio or WhatsApp +254 712 345678.',
-      hashtags: '#MagicalKenya #MasaiMara #SafariTrails #LuxuryTravel #VisitKenya #AfricaSafari',
-      scheduledDate: new Date('2024-10-05T18:00:00Z'),
-      status: 'PENDING_APPROVAL',
-    },
-  })
-
-  const post2 = await prisma.socialPost.create({
-    data: {
-      projectId: project1.id,
-      title: 'Exclusive Diani Beach Villa Showcase',
-      platform: 'FACEBOOK',
-      contentType: 'Carousel',
-      mediaUrl: 'https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?auto=format&fit=crop&q=80&w=800',
-      caption: 'Escape to the pristine white sands of Diani Beach. Enjoy private chef services, oceanfront infinity pool, and customized coastal tours.',
-      hashtags: '#DianiBeach #KenyaCoast #BeachResort #SafariTrails',
-      scheduledDate: new Date('2024-10-08T10:00:00Z'),
-      status: 'APPROVED',
-    },
-  })
-
-  const post3 = await prisma.socialPost.create({
-    data: {
-      projectId: project2.id,
-      title: 'Chef Special Steak Night Promo',
-      platform: 'TIKTOK',
-      contentType: 'Reel / Video',
-      mediaUrl: 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&q=80&w=800',
-      caption: 'Juicy 400g T-Bone Steak served with Truffle Fries! 🔥 Join us every Thursday night at Savannah Bistro Westlands.',
-      hashtags: '#NairobiEats #SavannahBistro #Westlands #SteakNight #KenyaTikTok',
-      scheduledDate: new Date('2024-10-10T12:00:00Z'),
-      status: 'REVISION_REQUESTED',
-      clientFeedback: 'Can we change the background music to a lighter afro-jazz track and update the price in text overlay?',
-    },
-  })
-
-  await prisma.contentApproval.create({
-    data: {
-      socialPostId: post2.id,
-      clientProfileId: client1User.clientProfile!.id,
-      status: 'APPROVED',
-      feedback: 'Approved! Great visuals.',
-    },
-  })
-
-  console.log('✅ Social Posts & Content Approvals created')
-
-  // 11. Invoices & Payments
-  const invoice1 = await prisma.invoice.create({
-    data: {
-      clientProfileId: client1User.clientProfile!.id,
-      invoiceNumber: 'INV-363-2024-001',
-      issueDate: new Date('2024-09-01'),
-      dueDate: new Date('2024-09-15'),
-      subtotal: 75000,
-      tax: 12000,
-      total: 87000,
-      amountPaid: 87000,
-      balance: 0,
-      status: 'PAID',
-      items: JSON.stringify([
-        { description: 'Growth Package Monthly Retainer (September)', qty: 1, unitPrice: 75000, total: 75000 },
-      ]),
-      notes: 'Thank you for your partnership.',
-      payments: {
-        create: [
-          {
-            amount: 87000,
-            paymentMethod: 'MPESA',
-            referenceNo: 'RKH982312A',
-            mpesaPhone: '254712345678',
-            status: 'COMPLETED',
-          },
-        ],
-      },
-    },
-  })
-
-  const invoice2 = await prisma.invoice.create({
-    data: {
-      clientProfileId: client1User.clientProfile!.id,
-      invoiceNumber: 'INV-363-2024-004',
-      issueDate: new Date('2024-10-01'),
-      dueDate: new Date('2024-10-15'),
-      subtotal: 75000,
-      tax: 12000,
-      total: 87000,
-      amountPaid: 0,
-      balance: 87000,
-      status: 'SENT',
-      items: JSON.stringify([
-        { description: 'Growth Package Monthly Retainer (October)', qty: 1, unitPrice: 75000, total: 75000 },
-      ]),
-      notes: 'Payable via M-Pesa or Bank Transfer.',
-    },
-  })
-
-  const invoice3 = await prisma.invoice.create({
-    data: {
-      clientProfileId: client2User.clientProfile!.id,
-      invoiceNumber: 'INV-363-2024-002',
-      issueDate: new Date('2024-09-10'),
-      dueDate: new Date('2024-09-24'),
-      subtotal: 50000,
-      tax: 8000,
-      total: 58000,
-      amountPaid: 58000,
-      balance: 0,
-      status: 'PAID',
-      items: JSON.stringify([
-        { description: 'Savannah Bistro Reel Shoot & Content Editing', qty: 1, unitPrice: 50000, total: 50000 },
-      ]),
-      notes: 'Paid via Card.',
-      payments: {
-        create: [
-          {
-            amount: 58000,
-            paymentMethod: 'CARD',
-            referenceNo: 'CARD-TXN-99821',
-            status: 'COMPLETED',
-          },
-        ],
-      },
-    },
-  })
-
-  console.log('✅ Invoices & Payments created')
-
-  // 12. Reports
-  await prisma.report.create({
-    data: {
-      clientProfileId: client1User.clientProfile!.id,
-      projectId: project1.id,
-      title: 'September 2024 Social & Traffic Performance Report',
-      reportType: 'SOCIAL',
-      metrics: JSON.stringify({
-        followers: '45,200 (+3,400)',
-        impressions: '380,000',
-        reach: '210,000',
-        engagementRate: '5.8%',
-        websiteClicks: '4,120',
-        conversions: '42 Bookings',
-      }),
-      period: 'September 2024',
-    },
-  })
-
-  // 13. Messages
-  await prisma.message.create({
-    data: {
-      projectId: project1.id,
-      senderId: adminUser.id,
-      senderRole: 'SUPER_ADMIN',
-      content: 'Hi David! The October content calendar draft is ready in your portal for review.',
-    },
-  })
-
-  await prisma.message.create({
-    data: {
-      projectId: project1.id,
-      senderId: client1User.id,
-      senderRole: 'CLIENT',
-      content: 'Thanks team! Reviewing the Masai Mara reel right now.',
-    },
-  })
-
-  // 14. Site Settings
+  // 7. Site Settings
   const settingsData = [
     { key: 'company_name', value: '363 Creators' },
     { key: 'company_tagline', value: 'We Create. We Manage. We Grow.' },
@@ -1092,7 +524,7 @@ Understanding search intent vs visual impulse discovery is key to choosing your 
   }
 
   console.log('✅ Site Settings created')
-  console.log('🎉 Seeding complete successfully!')
+  console.log('🎉 Clean seed completed! All Admin portal data is now empty and ready for fresh entries.')
 }
 
 main()
