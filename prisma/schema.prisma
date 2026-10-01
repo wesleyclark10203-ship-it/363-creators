@@ -1,0 +1,360 @@
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id            String         @id @default(uuid())
+  email         String         @unique
+  passwordHash  String
+  name          String
+  role          String         @default("CLIENT") // SUPER_ADMIN, ADMIN, STAFF, CLIENT
+  avatar        String?
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+
+  clientProfile ClientProfile?
+  messages      Message[]
+  notifications Notification[]
+}
+
+model ClientProfile {
+  id          String    @id @default(uuid())
+  userId      String    @unique
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  companyName String
+  industry    String?
+  phone       String?
+  whatsapp    String?
+  website     String?
+  address     String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  projects    Project[]
+  files       FileAsset[]
+  reports     Report[]
+  invoices    Invoice[]
+  approvals   ContentApproval[]
+}
+
+model TeamMember {
+  id          String   @id @default(uuid())
+  name        String
+  role        String
+  bio         String
+  photo       String?
+  email       String
+  skills      String   // JSON string array
+  socialLinks String   // JSON string object
+  isPublic    Boolean  @default(true)
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Service {
+  id           String   @id @default(uuid())
+  title        String
+  slug         String   @unique
+  description  String
+  shortDesc    String
+  icon         String
+  category     String
+  features     String   // JSON string array
+  benefits     String   // JSON string array
+  deliverables String   // JSON string array
+  process      String   // JSON string array
+  faqs         String   // JSON string array of {q, a}
+  isFeatured   Boolean  @default(false)
+  order        Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model PortfolioProject {
+  id              String   @id @default(uuid())
+  title           String
+  slug            String   @unique
+  clientName      String
+  industry        String
+  description     String
+  challenge       String?
+  strategy        String?
+  execution       String?
+  servicesProvided String  // JSON array
+  technologies    String   // JSON array
+  projectDate     String
+  featuredImage   String
+  gallery         String   // JSON string array of URLs
+  results         String   // JSON object key-values
+  testimonialText String?
+  url             String?
+  isFeatured      Boolean  @default(false)
+  order           Int      @default(0)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model PricingPlan {
+  id               String   @id @default(uuid())
+  name             String
+  description      String
+  price            String
+  billingFrequency String   @default("monthly")
+  features         String   // JSON string array
+  isPopular        Boolean  @default(false)
+  badge            String?
+  ctaText          String   @default("Get Started")
+  order            Int      @default(0)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}
+
+model Lead {
+  id               String     @id @default(uuid())
+  referenceNo      String     @unique
+  name             String
+  company          String?
+  email            String
+  phone            String
+  serviceRequested String
+  budgetRange      String?
+  projectDetails   String?
+  source           String     @default("Website Form")
+  status           String     @default("NEW") // NEW, CONTACTED, QUALIFIED, PROPOSAL_SENT, WON, LOST
+  createdAt        DateTime   @default(now())
+  updatedAt        DateTime   @updatedAt
+}
+
+model Quote {
+  id             String   @id @default(uuid())
+  referenceNo    String   @unique
+  businessName   String
+  contactName    String
+  email          String
+  phone          String
+  whatsapp       String?
+  services       String   // JSON array of selected services
+  projectDetails String
+  budgetRange    String
+  timeline       String
+  extraInfo      String?
+  status         String   @default("PENDING")
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model Consultation {
+  id           String        @id @default(uuid())
+  service      String
+  date         String
+  timeSlot     String
+  name         String
+  email        String
+  phone        String
+  businessName String?
+  message      String?
+  status       String        @default("PENDING") // PENDING, APPROVED, RESCHEDULED, CANCELLED
+  notes        String?
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+}
+
+model Project {
+  id              String        @id @default(uuid())
+  clientProfileId String
+  client          ClientProfile @relation(fields: [clientProfileId], references: [id], onDelete: Cascade)
+  name            String
+  serviceType     String
+  description     String
+  status          String        @default("PLANNING") // PLANNING, IN_PROGRESS, REVIEW, COMPLETED, ON_HOLD
+  progress        Int           @default(0)
+  startDate       DateTime
+  deadline        DateTime
+  budget          Float?
+  assignedTeam    String        // JSON array of team member names
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  milestones      ProjectMilestone[]
+  socialPosts     SocialPost[]
+  messages        Message[]
+  files           FileAsset[]
+  reports         Report[]
+}
+
+model ProjectMilestone {
+  id          String          @id @default(uuid())
+  projectId   String
+  project     Project         @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  name        String
+  description String?
+  dueDate     DateTime
+  status      String          @default("PENDING") // PENDING, IN_PROGRESS, COMPLETED
+  order       Int             @default(0)
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+}
+
+model SocialPost {
+  id             String         @id @default(uuid())
+  projectId      String
+  project        Project        @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  title          String
+  platform       String         @default("INSTAGRAM") // INSTAGRAM, FACEBOOK, TIKTOK, LINKEDIN, X
+  contentType    String         @default("Static Image")
+  mediaUrl       String
+  caption        String
+  hashtags       String
+  scheduledDate  DateTime
+  status         String         @default("DRAFT") // DRAFT, PENDING_APPROVAL, APPROVED, SCHEDULED, PUBLISHED, REVISION_REQUESTED
+  clientFeedback String?
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+
+  approvals      ContentApproval[]
+}
+
+model ContentApproval {
+  id              String        @id @default(uuid())
+  socialPostId    String
+  socialPost      SocialPost    @relation(fields: [socialPostId], references: [id], onDelete: Cascade)
+  clientProfileId String
+  clientProfile   ClientProfile @relation(fields: [clientProfileId], references: [id], onDelete: Cascade)
+  status          String        // APPROVED, REVISION_REQUESTED
+  decisionDate    DateTime      @default(now())
+  feedback        String?
+  createdAt       DateTime      @default(now())
+}
+
+model Message {
+  id           String   @id @default(uuid())
+  projectId    String
+  project      Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  senderId     String
+  sender       User     @relation(fields: [senderId], references: [id], onDelete: Cascade)
+  senderRole   String   @default("CLIENT")
+  content      String
+  attachmentUrl String?
+  isRead       Boolean  @default(false)
+  createdAt    DateTime @default(now())
+}
+
+model Notification {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title     String
+  message   String
+  link      String?
+  type      String   @default("INFO")
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+model FileAsset {
+  id              String        @id @default(uuid())
+  projectId       String?
+  project         Project?      @relation(fields: [projectId], references: [id], onDelete: SetNull)
+  clientProfileId String
+  clientProfile   ClientProfile @relation(fields: [clientProfileId], references: [id], onDelete: Cascade)
+  fileName        String
+  fileUrl         String
+  fileType        String
+  fileSize        Int
+  uploadedBy      String
+  createdAt       DateTime      @default(now())
+}
+
+model Report {
+  id              String        @id @default(uuid())
+  clientProfileId String
+  clientProfile   ClientProfile @relation(fields: [clientProfileId], references: [id], onDelete: Cascade)
+  projectId       String?
+  project         Project?      @relation(fields: [projectId], references: [id], onDelete: SetNull)
+  title           String
+  reportType      String        @default("SOCIAL") // SOCIAL, WEBSITE, SEO, MARKETING
+  metrics         String        // JSON string object of key performance data
+  fileUrl         String?
+  period          String
+  createdAt       DateTime      @default(now())
+}
+
+model Invoice {
+  id              String        @id @default(uuid())
+  clientProfileId String
+  clientProfile   ClientProfile @relation(fields: [clientProfileId], references: [id], onDelete: Cascade)
+  invoiceNumber   String        @unique
+  issueDate       DateTime      @default(now())
+  dueDate         DateTime
+  subtotal        Float
+  tax             Float         @default(0)
+  total           Float
+  amountPaid      Float         @default(0)
+  balance         Float
+  status          String        @default("SENT") // DRAFT, SENT, PARTIALLY_PAID, PAID, OVERDUE
+  items           String        // JSON array of [{description, qty, unitPrice, total}]
+  notes           String?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  payments        Payment[]
+}
+
+model Payment {
+  id            String        @id @default(uuid())
+  invoiceId     String
+  invoice       Invoice       @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+  amount        Float
+  paymentMethod String        @default("MPESA") // MPESA, CARD, BANK_TRANSFER
+  referenceNo   String        @unique
+  mpesaPhone    String?
+  status        String        @default("PENDING") // PENDING, COMPLETED, FAILED
+  rawPayload    String?
+  createdAt     DateTime      @default(now())
+}
+
+model Testimonial {
+  id              String   @id @default(uuid())
+  clientName      String
+  company         String
+  position        String
+  photoUrl        String?
+  content         String
+  serviceCategory String
+  rating          Int      @default(5)
+  isPublished     Boolean  @default(true)
+  order           Int      @default(0)
+  createdAt       DateTime @default(now())
+}
+
+model BlogPost {
+  id             String    @id @default(uuid())
+  title          String
+  slug           String    @unique
+  author         String    @default("363 Team")
+  featuredImage  String
+  excerpt        String
+  content        String
+  category       String
+  tags           String    // JSON string array
+  seoTitle       String?
+  seoDescription String?
+  isPublished    Boolean   @default(true)
+  publishedAt    DateTime  @default(now())
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+}
+
+model SiteSetting {
+  id        String   @id @default(uuid())
+  key       String   @unique
+  value     String   // JSON string value
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

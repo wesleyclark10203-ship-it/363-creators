@@ -1,0 +1,59 @@
+import { NextResponse } from 'next/server'
+import { db } from '@/lib/db'
+import { verifyPassword, signToken, setAuthCookie } from '@/lib/auth'
+
+export async function POST(req: Request) {
+  try {
+    const { email, password } = await req.json()
+
+    if (!email || !password) {
+      return NextResponse.json({ error: 'Email and password are required' }, { status: 400 })
+    }
+
+    const user = await db.user.findUnique({
+      where: { email: email.toLowerCase().trim() },
+      include: { clientProfile: true },
+    })
+
+    if (!user) {
+      return NextResponse.json({ error: 'Invalid email or password' }, { status: 401 })
+    }
+
+    const isValid = await verifyPassword(password, user.passwordHash)
+    if (!isValid) {
+      return NextResponse.json({ error: 'Invalid email or password' }, { status: 401 })
+    }
+
+    const token = signToken({
+      userId: user.id,
+      email: user.email,
+      role: user.role as any,
+      name: user.name,
+      clientProfileId: user.clientProfile?.id,
+    })
+
+    const response = NextResponse.json({
+      success: true,
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        clientProfileId: user.clientProfile?.id,
+      },
+    })
+
+    response.cookies.set('363_auth_token', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      path: '/',
+      maxAge: 7 * 24 * 60 * 60,
+    })
+
+    return response
+  } catch (error: any) {
+    console.error('Login error:', error)
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
+  }
+}
