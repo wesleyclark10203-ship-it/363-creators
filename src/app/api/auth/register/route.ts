@@ -44,9 +44,7 @@ export async function POST(req: Request) {
       clientProfileId: newUser.clientProfile?.id,
     })
 
-    await setAuthCookie(token)
-
-    return NextResponse.json({
+    const response = NextResponse.json({
       success: true,
       user: {
         id: newUser.id,
@@ -56,8 +54,18 @@ export async function POST(req: Request) {
         clientProfileId: newUser.clientProfile?.id,
       },
     })
+
+    response.cookies.set('363_auth_token', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      path: '/',
+      maxAge: 7 * 24 * 60 * 60,
+    })
+
+    return response
   } catch (error: any) {
     console.error('Registration error:', error)
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
+    return NextResponse.json({ error: error?.message || 'Internal server error' }, { status: 500 })
   }
 }
