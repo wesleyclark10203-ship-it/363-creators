@@ -18,10 +18,10 @@ export default async function ClientInvoicesPage() {
   })
 
   return (
-    <div className="flex min-h-screen bg-slate-950 text-slate-100">
+    <div className="flex flex-col lg:flex-row min-h-screen max-w-full overflow-x-hidden bg-slate-950 text-slate-100">
       <DashboardSidebar userRole="CLIENT" userName={user.name} />
 
-      <main className="flex-1 p-8 space-y-8 overflow-y-auto">
+      <main className="flex-1 p-4 sm:p-6 lg:p-8 w-full max-w-full space-y-8 overflow-y-auto">
         <div className="border-b border-slate-800 pb-6">
           <h1 className="text-3xl font-extrabold text-white">Invoices & Payment Processing</h1>
           <p className="text-xs text-slate-400 mt-1">View billing history, download PDF invoices, and process instant M-Pesa or Card payments.</p>

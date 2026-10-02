@@ -28,10 +28,10 @@ export default async function ClientMessagesPage() {
   if (!clientProfile) redirect('/login')
 
   return (
-    <div className="flex min-h-screen bg-slate-950 text-slate-100">
+    <div className="flex flex-col lg:flex-row min-h-screen max-w-full overflow-x-hidden bg-slate-950 text-slate-100">
       <DashboardSidebar userRole="CLIENT" userName={user.name} />
 
-      <main className="flex-1 p-8 space-y-8 overflow-y-auto">
+      <main className="flex-1 p-4 sm:p-6 lg:p-8 w-full max-w-full space-y-8 overflow-y-auto">
         <div className="border-b border-slate-800 pb-6">
           <h1 className="text-3xl font-extrabold text-white">Project Messaging Thread</h1>
           <p className="text-xs text-slate-400 mt-1">Direct communication with your assigned 363 Creators account management team.</p>

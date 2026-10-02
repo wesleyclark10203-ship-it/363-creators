@@ -48,19 +48,19 @@ export default async function AdminDashboardOverview() {
   })
 
   return (
-    <div className="flex min-h-screen bg-slate-950 text-slate-100">
+    <div className="flex flex-col lg:flex-row min-h-screen bg-slate-950 text-slate-100 max-w-full overflow-x-hidden">
       <DashboardSidebar userRole={user.role as any} userName={user.name} companyName="Executive Agency Command" />
 
-      <main className="flex-1 p-8 space-y-8 overflow-y-auto">
+      <main className="flex-1 p-4 sm:p-6 lg:p-8 space-y-8 overflow-y-auto w-full max-w-full">
         {/* Admin Header */}
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-slate-800 pb-6">
           <div>
-            <h1 className="text-3xl font-extrabold text-white">Agency Command Center</h1>
+            <h1 className="text-2xl sm:text-3xl font-extrabold text-white">Agency Command Center</h1>
             <p className="text-xs text-slate-400 mt-1">Executive overview for 363 Creators platform operations.</p>
           </div>
-          <div className="flex items-center gap-3">
-            <Link href="/admin/leads">
-              <Button variant="gradient" size="sm">
+          <div className="flex items-center gap-3 w-full sm:w-auto">
+            <Link href="/admin/leads" className="w-full sm:w-auto">
+              <Button variant="gradient" size="sm" className="w-full sm:w-auto">
                 View New Leads ({leadsCount})
               </Button>
             </Link>
@@ -68,7 +68,7 @@ export default async function AdminDashboardOverview() {
         </div>
 
         {/* Executive Stats Cards */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
           <Card className="p-5 bg-slate-900 border-slate-800 space-y-2">
             <div className="flex items-center justify-between">
               <span className="text-xs text-slate-400 font-medium">Total Clients</span>
