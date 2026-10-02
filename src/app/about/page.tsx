@@ -18,12 +18,6 @@ export default function AboutPage() {
     { icon: Users, title: 'Client Partnership', desc: 'We act as an extension of your internal team rather than a distant vendor.' },
   ]
 
-  const team = [
-    { name: 'Alex Creator', role: 'Founder & Managing Director', bio: 'Strategic growth visionary with 8+ years scaling brands in East Africa.', photo: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=300' },
-    { name: 'Sarah Lead', role: 'Head of Growth & Performance Marketing', bio: 'PPC & Meta Ads specialist having managed KSh 50M+ in ad spend.', photo: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=300' },
-    { name: 'David Developer', role: 'Lead Software Architect', bio: 'Full-stack Next.js & React specialist focused on high-performance web systems.', photo: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=300' },
-    { name: 'Joy Video', role: 'Creative Director & Video Lead', bio: 'Commercial videographer & storyteller behind viral TikTok & Reel campaigns.', photo: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=300' },
-  ]
 
   return (
     <div className="py-16 space-y-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -99,35 +93,7 @@ export default function AboutPage() {
         </div>
       </div>
 
-      {/* Team */}
-      <div className="space-y-12">
-        <div className="text-center max-w-2xl mx-auto">
-          <Badge variant="cyan">The Strategists & Engineers</Badge>
-          <h2 className="text-3xl font-bold text-slate-900 dark:text-white mt-2">Meet Our Leadership Team</h2>
-        </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-          {team.map((member, idx) => (
-            <Card key={idx} className="overflow-hidden group">
-              <div className="relative h-56 overflow-hidden">
-                <Image
-                  src={member.photo}
-                  alt={member.name}
-                  fill
-                  sizes="(max-width: 640px) 100vw, 25vw"
-                  className="object-cover group-hover:scale-105 transition-transform"
-                  loading="lazy"
-                />
-              </div>
-              <div className="p-5 space-y-2">
-                <h3 className="font-bold text-lg text-slate-900 dark:text-white">{member.name}</h3>
-                <p className="text-xs font-semibold text-sky-500">{member.role}</p>
-                <p className="text-xs text-slate-500 dark:text-slate-400">{member.bio}</p>
-              </div>
-            </Card>
-          ))}
-        </div>
-      </div>
 
       {/* CTA */}
       <div className="text-center p-12 rounded-3xl bg-slate-900 text-white space-y-6">
