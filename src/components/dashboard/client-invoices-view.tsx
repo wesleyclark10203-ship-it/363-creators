@@ -174,7 +174,8 @@ export function ClientInvoicesView({ invoices, userPhone }: { invoices: any[]; u
               <div>
                 <h2 className="text-2xl font-black tracking-tight">363 CREATORS</h2>
                 <p className="text-xs text-slate-500">Digital Agency | Nairobi, Kenya</p>
-                <p className="text-xs text-slate-500">andalamorgan@gmail.com | 0707 311 381</p>
+                <p className="text-xs text-slate-500">wesleyclark10203@gmail.com | andalamorgan@gmail.com</p>
+                <p className="text-xs text-slate-500">Tel: +254 790 671626 / +254 707 311381</p>
               </div>
               <div className="text-right">
                 <h3 className="text-xl font-bold text-sky-600">INVOICE</h3>

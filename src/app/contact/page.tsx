@@ -91,7 +91,10 @@ export default function ContactPage() {
                 <Mail className="h-5 w-5 text-cyan-400 shrink-0 mt-0.5" />
                 <div>
                   <p className="font-bold text-white">Email Us</p>
-                  <a href="mailto:andalamorgan@gmail.com" className="text-xs text-slate-400 hover:text-white">andalamorgan@gmail.com</a>
+                  <div className="flex flex-col gap-0.5">
+                    <a href="mailto:wesleyclark10203@gmail.com" className="text-xs text-slate-400 hover:text-white">wesleyclark10203@gmail.com</a>
+                    <a href="mailto:andalamorgan@gmail.com" className="text-xs text-slate-400 hover:text-white">andalamorgan@gmail.com</a>
+                  </div>
                 </div>
               </div>
 
@@ -99,7 +102,10 @@ export default function ContactPage() {
                 <Phone className="h-5 w-5 text-cyan-400 shrink-0 mt-0.5" />
                 <div>
                   <p className="font-bold text-white">Call Us</p>
-                  <a href="tel:+254707311381" className="text-xs text-slate-400 hover:text-white">0707 311 381</a>
+                  <div className="flex flex-col gap-0.5">
+                    <a href="tel:+254790671626" className="text-xs text-slate-400 hover:text-white">0790 671 626</a>
+                    <a href="tel:+254707311381" className="text-xs text-slate-400 hover:text-white">0707 311 381</a>
+                  </div>
                 </div>
               </div>
 
@@ -107,7 +113,7 @@ export default function ContactPage() {
                 <MessageSquare className="h-5 w-5 text-emerald-400 shrink-0 mt-0.5" />
                 <div>
                   <p className="font-bold text-white">WhatsApp Support</p>
-                  <a href={`https://wa.me/${whatsappNum}`} target="_blank" rel="noreferrer" className="text-xs text-emerald-400 hover:underline">Chat on WhatsApp (0707 311 381)</a>
+                  <a href={`https://wa.me/${whatsappNum}`} target="_blank" rel="noreferrer" className="text-xs text-emerald-400 hover:underline">Chat on WhatsApp (0707 311 381 / 0790 671 626)</a>
                 </div>
               </div>
             </div>

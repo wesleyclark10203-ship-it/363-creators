@@ -506,8 +506,8 @@ Next.js leverages Server-Side Rendering (SSR) and Static Site Generation (SSG) t
   const settingsData = [
     { key: 'company_name', value: '363 Creators' },
     { key: 'company_tagline', value: 'We Create. We Manage. We Grow.' },
-    { key: 'company_email', value: 'andalamorgan@gmail.com' },
-    { key: 'company_phone', value: '+254 707 311381' },
+    { key: 'company_email', value: 'wesleyclark10203@gmail.com, andalamorgan@gmail.com' },
+    { key: 'company_phone', value: '+254 790 671626, +254 707 311381' },
     { key: 'whatsapp_number', value: '254707311381' },
     { key: 'location_address', value: 'Nairobi, Kenya' },
     { key: 'social_instagram', value: 'https://www.instagram.com/363creators/?utm_source=ig_web_button_share_sheet' },

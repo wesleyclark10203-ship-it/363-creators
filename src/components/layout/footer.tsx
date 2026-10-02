@@ -128,17 +128,19 @@ export function Footer() {
                 <MapPin className="h-4 w-4 text-cyan-400 shrink-0 mt-0.5" />
                 <span>Nairobi, Kenya</span>
               </li>
-              <li className="flex items-center gap-2.5 text-slate-400">
-                <Mail className="h-4 w-4 text-cyan-400 shrink-0" />
-                <a href="mailto:andalamorgan@gmail.com" className="hover:text-white">
-                  andalamorgan@gmail.com
-                </a>
+              <li className="flex items-start gap-2.5 text-slate-400">
+                <Mail className="h-4 w-4 text-cyan-400 shrink-0 mt-0.5" />
+                <div className="flex flex-col gap-0.5">
+                  <a href="mailto:wesleyclark10203@gmail.com" className="hover:text-white">wesleyclark10203@gmail.com</a>
+                  <a href="mailto:andalamorgan@gmail.com" className="hover:text-white">andalamorgan@gmail.com</a>
+                </div>
               </li>
-              <li className="flex items-center gap-2.5 text-slate-400">
-                <Phone className="h-4 w-4 text-cyan-400 shrink-0" />
-                <a href="tel:+254707311381" className="hover:text-white">
-                  0707 311 381
-                </a>
+              <li className="flex items-start gap-2.5 text-slate-400">
+                <Phone className="h-4 w-4 text-cyan-400 shrink-0 mt-0.5" />
+                <div className="flex flex-col gap-0.5">
+                  <a href="tel:+254790671626" className="hover:text-white">0790 671 626</a>
+                  <a href="tel:+254707311381" className="hover:text-white">0707 311 381</a>
+                </div>
               </li>
               <li className="flex items-center gap-2.5 text-slate-400">
                 <MessageSquare className="h-4 w-4 text-emerald-400 shrink-0" />
