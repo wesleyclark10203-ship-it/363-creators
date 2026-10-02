@@ -10,7 +10,7 @@ export function Footer() {
   const isDashboardOrAdmin = pathname.startsWith('/dashboard') || pathname.startsWith('/admin')
   if (isDashboardOrAdmin) return null
 
-  const whatsappNum = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '254790671626'
+  const whatsappNum = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '254707311381'
 
   return (
     <footer className="bg-slate-900 dark:bg-[#060911] text-slate-300 border-t border-slate-800 pt-16 pb-12 transition-colors">
@@ -130,14 +130,14 @@ export function Footer() {
               </li>
               <li className="flex items-center gap-2.5 text-slate-400">
                 <Mail className="h-4 w-4 text-cyan-400 shrink-0" />
-                <a href="mailto:wesleyclark10203@gmail.com" className="hover:text-white">
-                  wesleyclark10203@gmail.com
+                <a href="mailto:andalamorgan@gmail.com" className="hover:text-white">
+                  andalamorgan@gmail.com
                 </a>
               </li>
               <li className="flex items-center gap-2.5 text-slate-400">
                 <Phone className="h-4 w-4 text-cyan-400 shrink-0" />
-                <a href="tel:+254790671626" className="hover:text-white">
-                  0790 671 626
+                <a href="tel:+254707311381" className="hover:text-white">
+                  0707 311 381
                 </a>
               </li>
               <li className="flex items-center gap-2.5 text-slate-400">

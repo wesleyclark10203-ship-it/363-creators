@@ -57,7 +57,7 @@ export default function ContactPage() {
     }
   }
 
-  const whatsappNum = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '254790671626'
+  const whatsappNum = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '254707311381'
 
   return (
     <div className="py-16 space-y-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -91,7 +91,7 @@ export default function ContactPage() {
                 <Mail className="h-5 w-5 text-cyan-400 shrink-0 mt-0.5" />
                 <div>
                   <p className="font-bold text-white">Email Us</p>
-                  <a href="mailto:wesleyclark10203@gmail.com" className="text-xs text-slate-400 hover:text-white">wesleyclark10203@gmail.com</a>
+                  <a href="mailto:andalamorgan@gmail.com" className="text-xs text-slate-400 hover:text-white">andalamorgan@gmail.com</a>
                 </div>
               </div>
 
@@ -99,7 +99,7 @@ export default function ContactPage() {
                 <Phone className="h-5 w-5 text-cyan-400 shrink-0 mt-0.5" />
                 <div>
                   <p className="font-bold text-white">Call Us</p>
-                  <a href="tel:+254790671626" className="text-xs text-slate-400 hover:text-white">0790 671 626</a>
+                  <a href="tel:+254707311381" className="text-xs text-slate-400 hover:text-white">0707 311 381</a>
                 </div>
               </div>
 
@@ -107,7 +107,7 @@ export default function ContactPage() {
                 <MessageSquare className="h-5 w-5 text-emerald-400 shrink-0 mt-0.5" />
                 <div>
                   <p className="font-bold text-white">WhatsApp Support</p>
-                  <a href={`https://wa.me/${whatsappNum}`} target="_blank" rel="noreferrer" className="text-xs text-emerald-400 hover:underline">Chat on WhatsApp (0790 671 626)</a>
+                  <a href={`https://wa.me/${whatsappNum}`} target="_blank" rel="noreferrer" className="text-xs text-emerald-400 hover:underline">Chat on WhatsApp (0707 311 381)</a>
                 </div>
               </div>
             </div>

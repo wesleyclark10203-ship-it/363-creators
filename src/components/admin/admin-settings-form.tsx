@@ -10,9 +10,9 @@ export function AdminSettingsForm({ initialSettings }: { initialSettings: Record
   const [settings, setSettings] = React.useState({
     company_name: initialSettings.company_name || '363 Creators',
     company_tagline: initialSettings.company_tagline || 'We Create. We Manage. We Grow.',
-    company_email: initialSettings.company_email || 'wesleyclark10203@gmail.com',
-    company_phone: initialSettings.company_phone || '+254 790 671626',
-    whatsapp_number: initialSettings.whatsapp_number || '254790671626',
+    company_email: initialSettings.company_email || 'andalamorgan@gmail.com',
+    company_phone: initialSettings.company_phone || '+254 707 311381',
+    whatsapp_number: initialSettings.whatsapp_number || '254707311381',
     location_address: initialSettings.location_address || 'Nairobi, Kenya',
     social_instagram: initialSettings.social_instagram || 'https://www.instagram.com/363creators/?utm_source=ig_web_button_share_sheet',
     social_facebook: initialSettings.social_facebook || 'https://www.facebook.com/363creators.ke',

@@ -8,7 +8,7 @@ export function WhatsAppButton() {
   const isDashboardOrAdmin = pathname.startsWith('/dashboard') || pathname.startsWith('/admin')
   if (isDashboardOrAdmin) return null
 
-  const whatsappNum = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '254790671626'
+  const whatsappNum = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '254707311381'
   const message = encodeURIComponent('Hello 363 Creators! I would like to inquire about your digital agency services.')
 
   return (
