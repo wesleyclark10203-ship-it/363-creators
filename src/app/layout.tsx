@@ -54,12 +54,16 @@ export const metadata: Metadata = {
     creator: '@363creators',
     images: ['https://363creators.co.ke/og-image.jpg'],
   },
+  verification: {
+    google: 'oOSHQWP7DYgaLTiYF76LfLvqd1WvsLzOFL3OpAeV08g',
+  },
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning className={jakarta.variable}>
       <head>
+        <meta name="google-site-verification" content="oOSHQWP7DYgaLTiYF76LfLvqd1WvsLzOFL3OpAeV08g" />
         <link rel="image_src" href="https://363creators.co.ke/og-image.jpg" />
         <link rel="preconnect" href="https://res.cloudinary.com" />
         <link rel="dns-prefetch" href="https://res.cloudinary.com" />
