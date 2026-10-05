@@ -13,7 +13,7 @@ const jakarta = Plus_Jakarta_Sans({
 })
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'https://363creators.co.ke'),
+  metadataBase: new URL('https://363creators.co.ke'),
   title: '363 Creators | Digital Agency - We Create. We Manage. We Grow.',
   description:
     '363 Creators is a premium digital agency providing Social Media Management, Website Design & Development, Digital Marketing, Branding, Content Creation, and SEO across Kenya, East Africa, and globally.',
@@ -34,7 +34,7 @@ export const metadata: Metadata = {
     siteName: '363 Creators',
     images: [
       {
-        url: '/logo.jpg',
+        url: 'https://363creators.co.ke/logo.jpg',
         width: 1200,
         height: 630,
         alt: '363 Creators Digital Agency',
@@ -52,7 +52,7 @@ export const metadata: Metadata = {
     title: '363 Creators | Digital Agency',
     description: 'We Create. We Manage. We Grow.',
     creator: '@363creators',
-    images: ['/logo.jpg'],
+    images: ['https://363creators.co.ke/logo.jpg'],
   },
 }
 
