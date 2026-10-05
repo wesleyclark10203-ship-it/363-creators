@@ -38,7 +38,8 @@ export function Footer() {
               <a
                 href="https://www.instagram.com/363creators/?utm_source=ig_web_button_share_sheet"
                 target="_blank"
-                rel="noreferrer"
+                rel="noreferrer noopener"
+                aria-label="Follow 363 Creators on Instagram"
                 className="p-2.5 rounded-xl bg-slate-800 hover:bg-sky-600 hover:text-white transition-colors"
               >
                 <Instagram className="h-4 w-4" />
@@ -46,7 +47,8 @@ export function Footer() {
               <a
                 href="https://www.facebook.com/363creators.ke"
                 target="_blank"
-                rel="noreferrer"
+                rel="noreferrer noopener"
+                aria-label="Follow 363 Creators on Facebook"
                 className="p-2.5 rounded-xl bg-slate-800 hover:bg-sky-600 hover:text-white transition-colors"
               >
                 <Facebook className="h-4 w-4" />

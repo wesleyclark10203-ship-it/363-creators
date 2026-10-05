@@ -6,8 +6,19 @@ import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 
 export const metadata = {
-  title: 'About Us | 363 Creators Digital Agency',
-  description: 'Learn about 363 Creators, our team, mission, and how we help East African and global businesses build digital impact.',
+  title: 'About Us | 363 Creators Digital Agency Nairobi',
+  description:
+    'Learn about 363 Creators, our team, mission, and how we help East African and global businesses build measurable digital impact through websites, branding, and content.',
+  alternates: {
+    canonical: 'https://363creators.co.ke/about',
+  },
+  openGraph: {
+    title: 'About 363 Creators | Digital Agency Nairobi',
+    description:
+      'Learn about 363 Creators, our mission, values, and how we grow businesses in Kenya and across East Africa.',
+    url: 'https://363creators.co.ke/about',
+    type: 'website',
+  },
 }
 
 export default function AboutPage() {

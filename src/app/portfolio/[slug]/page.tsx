@@ -11,9 +11,33 @@ export const revalidate = 60
 export async function generateMetadata({ params }: { params: { slug: string } }) {
   const project = await db.portfolioProject.findUnique({ where: { slug: params.slug } })
   if (!project) return {}
+  const canonicalUrl = `https://363creators.co.ke/portfolio/${project.slug}`
   return {
-    title: `${project.title} Case Study | 363 Creators`,
+    title: `${project.title} Case Study | 363 Creators Digital Agency`,
     description: project.description,
+    alternates: {
+      canonical: canonicalUrl,
+    },
+    openGraph: {
+      title: `${project.title} | 363 Creators Case Study`,
+      description: project.description,
+      url: canonicalUrl,
+      type: 'article',
+      images: [
+        {
+          url: project.featuredImage || 'https://363creators.co.ke/og-image.jpg',
+          width: 1200,
+          height: 630,
+          alt: project.title,
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${project.title} | 363 Creators Case Study`,
+      description: project.description,
+      images: [project.featuredImage || 'https://363creators.co.ke/og-image.jpg'],
+    },
   }
 }
 
@@ -27,10 +51,66 @@ export default async function PortfolioProjectPage({ params }: { params: { slug:
   const gallery = JSON.parse(project.gallery || '[]')
   const results = JSON.parse(project.results || '{}')
 
+  const caseStudyJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'CreativeWork',
+    headline: `${project.title} Case Study`,
+    description: project.description,
+    image: project.featuredImage || 'https://363creators.co.ke/og-image.jpg',
+    creator: {
+      '@type': 'Organization',
+      name: '363 Creators',
+      url: 'https://363creators.co.ke',
+    },
+  }
+
+  const breadcrumbJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: 'Home',
+        item: 'https://363creators.co.ke',
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: 'Portfolio',
+        item: 'https://363creators.co.ke/portfolio',
+      },
+      {
+        '@type': 'ListItem',
+        position: 3,
+        name: project.title,
+        item: `https://363creators.co.ke/portfolio/${project.slug}`,
+      },
+    ],
+  }
+
   return (
     <div className="py-16 space-y-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(caseStudyJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
+
+      {/* Breadcrumbs */}
+      <nav aria-label="Breadcrumb" className="pt-4 flex items-center gap-2 text-xs text-slate-500">
+        <Link href="/" className="hover:text-slate-900 dark:hover:text-white transition-colors">Home</Link>
+        <span>/</span>
+        <Link href="/portfolio" className="hover:text-slate-900 dark:hover:text-white transition-colors">Portfolio</Link>
+        <span>/</span>
+        <span className="text-slate-900 dark:text-white font-medium">{project.title}</span>
+      </nav>
+
       {/* Header */}
-      <div className="space-y-6 pt-8 max-w-3xl">
+      <div className="space-y-6 pt-2 max-w-3xl">
         <div className="flex items-center gap-2">
           <Badge variant="cyan">{project.industry}</Badge>
           <span className="text-xs text-slate-500 flex items-center gap-1">
@@ -100,12 +180,41 @@ export default async function PortfolioProjectPage({ params }: { params: { slug:
 
 
 
+      {/* Services Provided & Internal Links */}
+      {services.length > 0 && (
+        <div className="p-6 rounded-2xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 space-y-3">
+          <h4 className="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider">
+            Capabilities Delivered in this Project
+          </h4>
+          <div className="flex flex-wrap gap-2 text-xs">
+            {services.map((srv: string) => (
+              <span key={srv} className="px-3 py-1.5 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 font-medium text-slate-700 dark:text-slate-300">
+                {srv}
+              </span>
+            ))}
+            <Link
+              href="/services"
+              className="px-3 py-1.5 rounded-lg bg-sky-50 dark:bg-sky-950/40 text-sky-600 dark:text-sky-400 font-semibold hover:underline"
+            >
+              Explore All Agency Services →
+            </Link>
+          </div>
+        </div>
+      )}
+
       {/* CTA */}
       <div className="text-center p-12 rounded-3xl bg-slate-900 text-white space-y-4">
         <h2 className="text-3xl font-bold">Want similar results for your business?</h2>
-        <Link href="/get-a-quote">
-          <Button variant="gradient" size="lg">Start Your Project <ArrowRight className="h-4 w-4 ml-1" /></Button>
-        </Link>
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+          <Link href="/get-a-quote">
+            <Button variant="gradient" size="lg">Start Your Project <ArrowRight className="h-4 w-4 ml-1" /></Button>
+          </Link>
+          <Link href="/portfolio">
+            <Button variant="outline" size="lg" className="border-slate-700 text-white hover:bg-slate-800">
+              Back to Portfolio
+            </Button>
+          </Link>
+        </div>
       </div>
     </div>
   )

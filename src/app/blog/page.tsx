@@ -6,8 +6,19 @@ import { Badge } from '@/components/ui/badge'
 import { Card } from '@/components/ui/card'
 
 export const metadata = {
-  title: 'Blog & Insights | 363 Creators',
-  description: 'Digital marketing tactics, web development trends, social media strategies, and SEO guides for East African businesses.',
+  title: 'Blog & Digital Marketing Insights | 363 Creators',
+  description:
+    'Actionable digital marketing tactics, web development guides, social media strategies, and SEO insights for businesses in Kenya and East Africa.',
+  alternates: {
+    canonical: 'https://363creators.co.ke/blog',
+  },
+  openGraph: {
+    title: 'Blog & Digital Insights | 363 Creators',
+    description:
+      'Digital marketing tactics, web development guides, and growth strategies for modern businesses.',
+    url: 'https://363creators.co.ke/blog',
+    type: 'website',
+  },
 }
 
 export const revalidate = 3600

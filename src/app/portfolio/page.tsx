@@ -1,8 +1,19 @@
 import { Badge } from '@/components/ui/badge'
 
 export const metadata = {
-  title: 'Portfolio | 363 Creators',
-  description: 'Explore client case studies, website builds, branding design, and social media growth campaigns by 363 Creators.',
+  title: 'Portfolio & Case Studies | 363 Creators Digital Agency',
+  description:
+    'Explore client case studies, website builds, branding design, and social media growth campaigns by 363 Creators in East Africa.',
+  alternates: {
+    canonical: 'https://363creators.co.ke/portfolio',
+  },
+  openGraph: {
+    title: 'Featured Portfolio | 363 Creators',
+    description:
+      'Explore client case studies, website designs, and viral growth campaigns delivered by 363 Creators.',
+    url: 'https://363creators.co.ke/portfolio',
+    type: 'website',
+  },
 }
 
 export default function PortfolioPage() {

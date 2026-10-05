@@ -6,8 +6,19 @@ import { Button } from '@/components/ui/button'
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card'
 
 export const metadata = {
-  title: 'Our Digital Services | 363 Creators',
-  description: 'Explore our complete suite of digital services: Social Media Management, Web Development, Digital Marketing, Branding, Content Creation, and SEO.',
+  title: 'Our Digital Services | 363 Creators Digital Agency',
+  description:
+    'Explore our complete suite of digital services in Nairobi, Kenya: Social Media Management, Website Development, Digital Marketing, Branding, Content Creation, and SEO.',
+  alternates: {
+    canonical: 'https://363creators.co.ke/services',
+  },
+  openGraph: {
+    title: 'Our Digital Services | 363 Creators',
+    description:
+      'High-impact social media management, website development, SEO, and paid performance funnels in Kenya.',
+    url: 'https://363creators.co.ke/services',
+    type: 'website',
+  },
 }
 
 export const revalidate = 60

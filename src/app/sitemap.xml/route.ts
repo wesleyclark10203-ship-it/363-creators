@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 import { db } from '@/lib/db'
 
 export async function GET() {
-  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://363creators.com'
+  const baseUrl = 'https://363creators.co.ke'
 
   const services = await db.service.findMany({ select: { slug: true, updatedAt: true } })
   const portfolio = await db.portfolioProject.findMany({ select: { slug: true, updatedAt: true } })

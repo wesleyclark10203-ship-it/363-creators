@@ -11,9 +11,33 @@ export const revalidate = 60
 export async function generateMetadata({ params }: { params: { slug: string } }) {
   const service = await db.service.findUnique({ where: { slug: params.slug } })
   if (!service) return {}
+  const canonicalUrl = `https://363creators.co.ke/services/${service.slug}`
   return {
-    title: `${service.title} | 363 Creators Digital Agency`,
-    description: service.shortDesc,
+    title: `${service.title} | 363 Creators Digital Agency Nairobi`,
+    description: service.shortDesc || service.description,
+    alternates: {
+      canonical: canonicalUrl,
+    },
+    openGraph: {
+      title: `${service.title} | 363 Creators Digital Agency`,
+      description: service.shortDesc || service.description,
+      url: canonicalUrl,
+      type: 'article',
+      images: [
+        {
+          url: 'https://363creators.co.ke/og-image.jpg',
+          width: 1024,
+          height: 1024,
+          alt: `${service.title} - 363 Creators`,
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${service.title} | 363 Creators`,
+      description: service.shortDesc || service.description,
+      images: ['https://363creators.co.ke/og-image.jpg'],
+    },
   }
 }
 
@@ -24,16 +48,81 @@ export default async function ServiceDetailPage({ params }: { params: { slug: st
     notFound()
   }
 
+  const otherServices = await db.service.findMany({
+    where: { slug: { not: params.slug } },
+    select: { title: true, slug: true, shortDesc: true, category: true },
+    take: 3,
+  })
+
   const features = JSON.parse(service.features || '[]')
   const benefits = JSON.parse(service.benefits || '[]')
   const deliverables = JSON.parse(service.deliverables || '[]')
   const processSteps = JSON.parse(service.process || '[]')
   const faqs = JSON.parse(service.faqs || '[]')
 
+  const breadcrumbJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: 'Home',
+        item: 'https://363creators.co.ke',
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: 'Services',
+        item: 'https://363creators.co.ke/services',
+      },
+      {
+        '@type': 'ListItem',
+        position: 3,
+        name: service.title,
+        item: `https://363creators.co.ke/services/${service.slug}`,
+      },
+    ],
+  }
+
+  const serviceJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    name: service.title,
+    description: service.shortDesc || service.description,
+    provider: {
+      '@type': 'Organization',
+      name: '363 Creators',
+      url: 'https://363creators.co.ke',
+    },
+    areaServed: {
+      '@type': 'Country',
+      name: 'Kenya',
+    },
+  }
+
   return (
     <div className="py-16 space-y-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceJsonLd) }}
+      />
+
+      {/* Breadcrumbs */}
+      <nav aria-label="Breadcrumb" className="pt-4 flex items-center gap-2 text-xs text-slate-500">
+        <Link href="/" className="hover:text-slate-900 dark:hover:text-white transition-colors">Home</Link>
+        <span>/</span>
+        <Link href="/services" className="hover:text-slate-900 dark:hover:text-white transition-colors">Services</Link>
+        <span>/</span>
+        <span className="text-slate-900 dark:text-white font-medium">{service.title}</span>
+      </nav>
+
       {/* Service Hero */}
-      <div className="text-center max-w-3xl mx-auto space-y-6 pt-8">
+      <div className="text-center max-w-3xl mx-auto space-y-6 pt-2">
         <Badge variant="cyan">{service.category}</Badge>
         <h1 className="text-4xl sm:text-6xl font-extrabold text-slate-900 dark:text-white tracking-tight">
           {service.title}
@@ -147,6 +236,40 @@ export default async function ServiceDetailPage({ params }: { params: { slug: st
               <Card key={idx} className="p-6 space-y-2">
                 <h3 className="font-bold text-base text-slate-900 dark:text-white">Q: {faq.q}</h3>
                 <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">A: {faq.a}</p>
+              </Card>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Related Services Internal Links */}
+      {otherServices.length > 0 && (
+        <div className="space-y-6 pt-4 border-t border-slate-200 dark:border-slate-800">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div>
+              <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Explore Other Services</h2>
+              <p className="text-sm text-slate-500">Comprehensive digital solutions to complement your growth.</p>
+            </div>
+            <Link href="/services" className="text-sm font-semibold text-sky-600 dark:text-sky-400 hover:underline flex items-center gap-1">
+              View All Services <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {otherServices.map((s) => (
+              <Card key={s.slug} className="p-5 space-y-3 hover:border-sky-500/40 transition-colors">
+                <Badge variant="cyan" className="text-[10px]">{s.category}</Badge>
+                <h3 className="font-bold text-base text-slate-900 dark:text-white">
+                  <Link href={`/services/${s.slug}`} className="hover:text-sky-500 transition-colors">
+                    {s.title}
+                  </Link>
+                </h3>
+                <p className="text-xs text-slate-500 line-clamp-2 leading-relaxed">{s.shortDesc}</p>
+                <Link
+                  href={`/services/${s.slug}`}
+                  className="inline-flex items-center text-xs font-semibold text-sky-600 dark:text-sky-400 pt-1 hover:underline"
+                >
+                  Learn more <ArrowRight className="h-3 w-3 ml-1" />
+                </Link>
               </Card>
             ))}
           </div>
