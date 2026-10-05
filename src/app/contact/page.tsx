@@ -6,6 +6,7 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Input, Textarea } from '@/components/ui/input'
 import { Card } from '@/components/ui/card'
+import { getWhatsAppUrl } from '@/lib/whatsapp'
 
 export default function ContactPage() {
   const [name, setName] = React.useState('')
@@ -56,8 +57,6 @@ export default function ContactPage() {
       setLoading(false)
     }
   }
-
-  const whatsappNum = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '254707311381'
 
   return (
     <div className="py-16 space-y-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -113,7 +112,7 @@ export default function ContactPage() {
                 <MessageSquare className="h-5 w-5 text-emerald-400 shrink-0 mt-0.5" />
                 <div>
                   <p className="font-bold text-white">WhatsApp Support</p>
-                  <a href={`https://wa.me/${whatsappNum}`} target="_blank" rel="noreferrer" className="text-xs text-emerald-400 hover:underline">Chat on WhatsApp (0707 311 381 / 0790 671 626)</a>
+                  <a href={getWhatsAppUrl('Hello 363 Creators! I would like to make an enquiry about your services.')} target="_blank" rel="noreferrer" className="text-xs text-emerald-400 hover:underline">Chat on WhatsApp (0707 311 381 / 0790 671 626)</a>
                 </div>
               </div>
             </div>

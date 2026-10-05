@@ -4,13 +4,12 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { Instagram, Facebook, MessageSquare, Mail, Phone, MapPin, ArrowRight } from 'lucide-react'
+import { getWhatsAppUrl } from '@/lib/whatsapp'
 
 export function Footer() {
   const pathname = usePathname()
   const isDashboardOrAdmin = pathname.startsWith('/dashboard') || pathname.startsWith('/admin')
   if (isDashboardOrAdmin) return null
-
-  const whatsappNum = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '254707311381'
 
   return (
     <footer className="bg-slate-900 dark:bg-[#060911] text-slate-300 border-t border-slate-800 pt-16 pb-12 transition-colors">
@@ -144,7 +143,7 @@ export function Footer() {
               </li>
               <li className="flex items-center gap-2.5 text-slate-400">
                 <MessageSquare className="h-4 w-4 text-emerald-400 shrink-0" />
-                <a href={`https://wa.me/${whatsappNum}`} target="_blank" rel="noreferrer" className="hover:text-white">
+                <a href={getWhatsAppUrl('Hello 363 Creators! I would like to make an enquiry about your services.')} target="_blank" rel="noreferrer" className="hover:text-white">
                   WhatsApp Support
                 </a>
               </li>

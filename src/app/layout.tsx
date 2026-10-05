@@ -13,6 +13,7 @@ const jakarta = Plus_Jakarta_Sans({
 })
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'https://363creators.co.ke'),
   title: '363 Creators | Digital Agency - We Create. We Manage. We Grow.',
   description:
     '363 Creators is a premium digital agency providing Social Media Management, Website Design & Development, Digital Marketing, Branding, Content Creation, and SEO across Kenya, East Africa, and globally.',
@@ -29,11 +30,11 @@ export const metadata: Metadata = {
   openGraph: {
     title: '363 Creators | We Create. We Manage. We Grow.',
     description: 'Transforming businesses into digital market leaders through strategic content, web design, and paid growth funnels.',
-    url: 'https://363creators.com',
+    url: 'https://363creators.co.ke',
     siteName: '363 Creators',
     images: [
       {
-        url: 'https://images.unsplash.com/photo-1557804506-669a67965ba0?auto=format&fit=crop&q=80&w=1200',
+        url: '/logo.jpg',
         width: 1200,
         height: 630,
         alt: '363 Creators Digital Agency',
@@ -51,6 +52,7 @@ export const metadata: Metadata = {
     title: '363 Creators | Digital Agency',
     description: 'We Create. We Manage. We Grow.',
     creator: '@363creators',
+    images: ['/logo.jpg'],
   },
 }
 
