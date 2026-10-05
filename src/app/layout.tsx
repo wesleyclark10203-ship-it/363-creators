@@ -34,10 +34,10 @@ export const metadata: Metadata = {
     siteName: '363 Creators',
     images: [
       {
-        url: 'https://363creators.co.ke/logo.jpg',
-        width: 1200,
-        height: 630,
-        alt: '363 Creators Digital Agency',
+        url: 'https://363creators.co.ke/og-image.jpg',
+        width: 1024,
+        height: 1024,
+        alt: '363 Creators - Content. Design. Growth.',
       },
     ],
     locale: 'en_KE',
@@ -52,7 +52,7 @@ export const metadata: Metadata = {
     title: '363 Creators | Digital Agency',
     description: 'We Create. We Manage. We Grow.',
     creator: '@363creators',
-    images: ['https://363creators.co.ke/logo.jpg'],
+    images: ['https://363creators.co.ke/og-image.jpg'],
   },
 }
 
