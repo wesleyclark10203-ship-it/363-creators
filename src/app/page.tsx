@@ -11,7 +11,6 @@ import {
   Target,
   BarChart3,
   CheckCircle2,
-  Sparkles,
   Zap,
   ChevronRight,
 } from 'lucide-react'
@@ -76,10 +75,6 @@ export default async function HomePage() {
         <div className="absolute -top-24 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-gradient-to-tr from-sky-500/20 via-cyan-400/20 to-amber-500/20 blur-3xl pointer-events-none rounded-full" />
 
         <div className="space-y-8 flex flex-col items-center">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-sky-500/30 bg-sky-500/10 text-sky-600 dark:text-sky-400 text-xs font-bold tracking-wide uppercase">
-            <Sparkles className="h-3.5 w-3.5 text-amber-400 animate-pulse" /> East Africa’s Premier Digital Growth Agency
-          </div>
-
           <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-slate-900 dark:text-white leading-[1.1] max-w-4xl">
             We Create. <span className="gradient-text">We Manage.</span> We Grow.
           </h1>
